@@ -11,9 +11,9 @@ conn = mysql.connector.connect(
 
 mycursor = conn.cursor()
 # Create a new record
-sql = """INSERT INTO client (email, password) VALUES ('jtesting, 'connection')"""
-
-mycursor.execute(sql)
-# Commit changes
-conn.commit()
+sql = """INSERT INTO client (email, password) VALUES ('john@example.com', 'mypassword')"""
+try:
+    mycursor.execute(sql)
+    # Commit changes
+    conn.commit()
 
