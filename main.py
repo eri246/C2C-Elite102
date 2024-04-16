@@ -9,10 +9,11 @@ root = Tk()
 
 
 root.title("Welcome to Ericks Bank Service")
-frm = ttk.Frame(root, padding=10)
-frm.grid()
+root.geometry("600x250")
 
-startScreenSetup(frm)
+frameSetup(root)
+startScreenSetup()
+
 """
 i = Entry(frm)
 i.grid(column=0, row=4)

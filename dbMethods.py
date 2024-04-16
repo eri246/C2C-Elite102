@@ -11,20 +11,25 @@ conn = mysql.connector.connect(
 
 
 mycursor = conn.cursor()
-mycursor.execute("SELECT MAX(id) FROM user_accounts")
-id = mycursor.fetchone()[0]
+
+addId = 0
+clientId = 0
+
+def getAddId():
+   mycursor.execute("SELECT MAX(id) FROM user_accounts")
+   return mycursor.fetchone()[0]
 
 def addNewUser(fname,lname,accountBalance,password):
-    id +=1
-    sql = "INSERT INTO user_accounts (id, user_first_name, user_last_name, account_balance) VALUES (%s, %s, %s, %s, %s)"
-    mycursor.execute(sql, (id, fname, lname, accountBalance, password))
+    addId = 1 + getAddId()
+    sql = "INSERT INTO user_accounts (id, user_first_name, user_last_name, account_balance, password) VALUES (%s, %s, %s, %s, %s)"
+    mycursor.execute(sql, (addId, fname, lname, accountBalance, password))
     conn.commit()
 
 def getBalance(id):
     sql = f'SELECT account_balance FROM user_accounts WHERE id = {id}'
     mycursor.execute(sql)
     return mycursor.fetchall()
-    conn.commit()
+    
 
 def withdraw(id, amount):
    currentAmount = getBalance(id)
@@ -55,6 +60,12 @@ def updatePassword(id, oldPassword, newPassword):
     conn.commit()
     return True
 
+def signIn(fname, lname, password):
+    mycursor.execute( f'SELECT id FROM user_accounts WHERE user_first_name = {fname}, user_last_name = {lname}, password = {password}')
+    clientId = mycursor.fetchone()[0]
+
+   
+   
 
 
 
