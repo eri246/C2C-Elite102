@@ -1,6 +1,7 @@
 import mysql.connector
 import tkinter
 
+
 conn = mysql.connector.connect(
     user='root',
     host='localhost',
@@ -8,9 +9,13 @@ conn = mysql.connector.connect(
     database = "c2cproject"
 )
 
-mycursor = conn.cursor()
 
-def addNewUser(id, fname,lname,accountBalance,password):
+mycursor = conn.cursor()
+mycursor.execute("SELECT MAX(id) FROM user_accounts")
+id = mycursor.fetchone()[0]
+
+def addNewUser(fname,lname,accountBalance,password):
+    id +=1
     sql = "INSERT INTO user_accounts (id, user_first_name, user_last_name, account_balance) VALUES (%s, %s, %s, %s, %s)"
     mycursor.execute(sql, (id, fname, lname, accountBalance, password))
     conn.commit()
