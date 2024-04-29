@@ -9,7 +9,8 @@ root = Tk()
 
 
 root.title("Welcome to Ericks Bank Service")
-root.geometry("600x250")
+root.geometry("900x900")
+root.minsize(800, 800)
 
 frameSetup(root)
 startScreenSetup()

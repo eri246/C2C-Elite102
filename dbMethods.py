@@ -1,5 +1,6 @@
 import mysql.connector
 import tkinter
+from decimal import Decimal
 
 
 conn = mysql.connector.connect(
@@ -34,29 +35,30 @@ def getBalance(id):
 
 def withdraw(id, amount):
    currentAmount = getBalance(id)
-   newAmount = currentAmount - amount
+   newAmount = Decimal(currentAmount) - Decimal(amount)
    if newAmount < 0:
     return None
-   sql = "UPDATE user_accounts SET account_balance = {newAmount} WHERE id = {id}"
+   sql = f"UPDATE user_accounts SET account_balance = {newAmount} WHERE id = {id}"
    mycursor.execute(sql)
    conn.commit()
    return newAmount
 
 def deposit(id, amount):
    currentAmount = getBalance(id)
-   newAmount = currentAmount + amount
-   sql = "UPDATE user_accounts SET account_balance = {newAmount} WHERE id = {id}"
+   newAmount = Decimal(currentAmount) + Decimal(amount)
+   sql = f"UPDATE user_accounts SET account_balance = {newAmount} WHERE id = {id}"
    mycursor.execute(sql)
    conn.commit()
    return newAmount
 
-def updatePassword(id, oldPassword, newPassword):
-    mycursor.execute( f'SELECT account_balance FROM user_accounts WHERE id = {id}')
-    dbPassword = mycursor.fetchall()
+def updatePassword(id, oldPassword,newPassword):
+    mycursor.execute( f'SELECT password FROM user_accounts WHERE id = {id}')
+    dbPassword = mycursor.fetchone()[0]
     conn.commit()
     if(oldPassword != dbPassword):
+       print("works")
        return False
-    sql = "UPDATE user_accounts SET pasword = {newPassword} WHERE id = {id}"
+    sql = f"UPDATE user_accounts SET password = '{newPassword}' WHERE id = {id}"
     mycursor.execute(sql)
     conn.commit()
     return True
@@ -64,10 +66,14 @@ def updatePassword(id, oldPassword, newPassword):
 def signIn(fname, lname, password):
     mycursor.execute(f"SELECT id FROM user_accounts WHERE user_first_name = '{fname}' AND user_last_name = '{lname}' AND password = '{password}'")
     global clientId
-    clientId = mycursor.fetchone()[0]
+    pleaseWork =mycursor.fetchone()
+    if  pleaseWork == None:
+        return False
+    else:
+       clientId = pleaseWork[0]
+       return True
 
 def getClientId():
-   print(clientId)
    return clientId
 
 
