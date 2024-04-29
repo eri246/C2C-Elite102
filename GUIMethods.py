@@ -51,8 +51,9 @@ def createSignInScreen():
 def optionsMenu():
     clearFrame()
     Label(frm, text="Choose from list of options", font=('Arial', 20)).grid(column=0, row=0)
-    Label(frm, text="Account Balance: " + getBalance(clientId)).grid(column=0, row=1)
+    Label(frm, text="Account Balance: " + str(getBalance(getClientId()))).grid(column=0, row=1)
     
 def clearFrame():
     for widgets in frm.winfo_children():
         widgets.destroy()
+

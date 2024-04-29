@@ -28,7 +28,8 @@ def addNewUser(fname,lname,accountBalance,password):
 def getBalance(id):
     sql = f'SELECT account_balance FROM user_accounts WHERE id = {id}'
     mycursor.execute(sql)
-    return mycursor.fetchall()
+    balance = mycursor.fetchone()[0]
+    return balance
     
 
 def withdraw(id, amount):
@@ -61,8 +62,17 @@ def updatePassword(id, oldPassword, newPassword):
     return True
 
 def signIn(fname, lname, password):
-    mycursor.execute( f'SELECT id FROM user_accounts WHERE user_first_name = {fname}, user_last_name = {lname}, password = {password}')
+    mycursor.execute(f"SELECT id FROM user_accounts WHERE user_first_name = '{fname}' AND user_last_name = '{lname}' AND password = '{password}'")
+    global clientId
     clientId = mycursor.fetchone()[0]
+
+def getClientId():
+   print(clientId)
+   return clientId
+
+
+
+
 
    
    
